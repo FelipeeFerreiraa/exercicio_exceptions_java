@@ -23,7 +23,8 @@ public class Main {
 
         //------------ VARIAVEIS
         int num;
-        Date checkIn, checkOut, agora;
+        Date checkIn, checkOut;
+        String erro;
         Reserva r1;
 
         System.out.println("Número do quarto:");
@@ -50,16 +51,11 @@ public class Main {
             System.out.println("Data do check-Out: (dd/MM/yyyy)  ");
             checkOut = fmt.parse(sc.next());
 
-            // RECEBE A DATA ATUAL DO SISTEMA
-            agora = new Date();
-
-            if (checkIn.before(agora) || checkOut.before(agora)) {
-                System.out.println("--------- ERRO NA RESERVA; NOVAS DATAS DEVEM SER FUTURAS DATAS ---------");
-
-            } else if (!checkOut.after(checkIn)) {
-                System.out.println("--------- ERRO NA RESERVA; DATA DO CHECK-OUT DEVE SER POSTERIOR A DATA DO CHECK-IN ---------");
+            //---------- ATUALIZARdATAS RETORNA UMA STRING
+            erro = r1.atualizaDatas(checkIn, checkOut);
+            if (erro != null) {
+                System.out.println("ERRO ----> " + erro);
             } else {
-                r1.atualizaDatas(checkIn, checkOut);
                 System.out.println("NOVA RESERVA REALIZADA ----> " + r1.toString());
             }
 

@@ -12,6 +12,7 @@ public class Reserva {
 
     private Integer rooNumber;
     private Date checkIn, checkOut;
+    private static Date agora;
 
     private static SimpleDateFormat fmt = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -52,9 +53,23 @@ public class Reserva {
 
     }
 
-    public void atualizaDatas(Date checkIn, Date checkOut) {
+    public String atualizaDatas(Date checkIn, Date checkOut) {
+
+        // RECEBE A DATA ATUAL DO SISTEMA
+        agora = new Date();
+
+        if (checkIn.before(agora) || checkOut.before(agora)) {
+            return "--------- ERRO NA RESERVA; NOVAS DATAS DEVEM SER FUTURAS DATAS ---------";
+        }
+
+        if (!checkOut.after(checkIn)) {
+            return "--------- ERRO NA RESERVA; DATA DO CHECK-OUT DEVE SER POSTERIOR A DATA DO CHECK-IN ---------";
+        }
+
         this.checkIn = checkIn;
         this.checkOut = checkOut;
+        //----------- CASO DÊ TUDO CERTO RETORNA NULL
+        return null;
     }
 
     @Override
