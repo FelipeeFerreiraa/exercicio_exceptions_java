@@ -16,7 +16,8 @@ public class Main {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) throws ParseException {
+    // EXECUÇÃO DO PROGRAMA TRATADA, E NÃO PROPAGADA COMO ANTES (THROWS)
+    public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in).useLocale(Locale.US);
         SimpleDateFormat fmt = new SimpleDateFormat("dd/MM/yyyy");
@@ -24,21 +25,18 @@ public class Main {
         //------------ VARIAVEIS
         int num;
         Date checkIn, checkOut;
-        String erro;
         Reserva r1;
 
-        System.out.println("Número do quarto:");
-        num = sc.nextInt();
+        try {
 
-        System.out.println("Data do check-In: (dd/MM/yyyy)  ");
-        checkIn = fmt.parse(sc.next());
+            System.out.println("Número do quarto:");
+            num = sc.nextInt();
 
-        System.out.println("Data do check-Out: (dd/MM/yyyy)  ");
-        checkOut = fmt.parse(sc.next());
+            System.out.println("Data do check-In: (dd/MM/yyyy)  ");
+            checkIn = fmt.parse(sc.next());
+            System.out.println("Data do check-Out: (dd/MM/yyyy)  ");
+            checkOut = fmt.parse(sc.next());
 
-        if (!checkOut.after(checkIn)) {
-            System.out.println("--------- ERRO NA RESERVA; DATA DO CHECK-OUT DEVE SER POSTERIOR A DATA DO CHECK-IN ---------");
-        } else {
             r1 = new Reserva(num, checkIn, checkOut);
             System.out.println("RESERVA REALIZADA ----> " + r1.toString());
 
@@ -47,18 +45,18 @@ public class Main {
 
             System.out.println("Data do check-In: (dd/MM/yyyy)  ");
             checkIn = fmt.parse(sc.next());
-
             System.out.println("Data do check-Out: (dd/MM/yyyy)  ");
             checkOut = fmt.parse(sc.next());
 
-            //---------- ATUALIZARdATAS RETORNA UMA STRING
-            erro = r1.atualizaDatas(checkIn, checkOut);
-            if (erro != null) {
-                System.out.println("ERRO ----> " + erro);
-            } else {
-                System.out.println("NOVA RESERVA REALIZADA ----> " + r1.toString());
-            }
+            r1.atualizaDatas(checkIn, checkOut);
 
+            System.out.println("NOVA RESERVA REALIZADA ----> " + r1.toString());
+
+        } catch (ParseException e) {
+            System.out.println("FORMATO DE DATE INVÁLIDO ----> " + e);
+
+        } catch (IllegalArgumentException e) {
+            System.out.println("ERRO NA RESERVA ----> " + e.getMessage());
         }
 
         sc.close();

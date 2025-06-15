@@ -53,23 +53,22 @@ public class Reserva {
 
     }
 
-    public String atualizaDatas(Date checkIn, Date checkOut) {
+    public void atualizaDatas(Date checkIn, Date checkOut) {
 
         // RECEBE A DATA ATUAL DO SISTEMA
         agora = new Date();
 
         if (checkIn.before(agora) || checkOut.before(agora)) {
-            return "--------- ERRO NA RESERVA; NOVAS DATAS DEVEM SER FUTURAS DATAS ---------";
+            // LANÇANDO UMA EXCEPTION
+            throw new IllegalArgumentException("--------- ERRO NA RESERVA; NOVAS DATAS DEVEM SER FUTURAS DATAS (MAIOR QUE A DATA ATUAL) ---------");
         }
 
         if (!checkOut.after(checkIn)) {
-            return "--------- ERRO NA RESERVA; DATA DO CHECK-OUT DEVE SER POSTERIOR A DATA DO CHECK-IN ---------";
+            throw new IllegalArgumentException("--------- ERRO NA RESERVA; DATA DO CHECK-OUT DEVE SER POSTERIOR A DATA DO CHECK-IN ---------");
         }
 
         this.checkIn = checkIn;
         this.checkOut = checkOut;
-        //----------- CASO DÊ TUDO CERTO RETORNA NULL
-        return null;
     }
 
     @Override
