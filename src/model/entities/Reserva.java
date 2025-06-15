@@ -3,6 +3,7 @@ package model.entities;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
+import model.exceptions.DomainException;
 
 /**
  *
@@ -21,6 +22,11 @@ public class Reserva {
     }
 
     public Reserva(Integer rooNumber, Date checkIn, Date checkOut) {
+
+        if (!checkOut.after(checkIn)) {
+            throw new DomainException("--------- ERRO NA RESERVA; DATA DO CHECK-OUT DEVE SER POSTERIOR A DATA DO CHECK-IN ---------");
+        }
+
         this.rooNumber = rooNumber;
         this.checkIn = checkIn;
         this.checkOut = checkOut;
@@ -60,11 +66,11 @@ public class Reserva {
 
         if (checkIn.before(agora) || checkOut.before(agora)) {
             // LANÇANDO UMA EXCEPTION
-            throw new IllegalArgumentException("--------- ERRO NA RESERVA; NOVAS DATAS DEVEM SER FUTURAS DATAS (MAIOR QUE A DATA ATUAL) ---------");
+            throw new DomainException("--------- ERRO NA RESERVA; NOVAS DATAS DEVEM SER FUTURAS DATAS (MAIOR QUE A DATA ATUAL) ---------");
         }
 
         if (!checkOut.after(checkIn)) {
-            throw new IllegalArgumentException("--------- ERRO NA RESERVA; DATA DO CHECK-OUT DEVE SER POSTERIOR A DATA DO CHECK-IN ---------");
+            throw new DomainException("--------- ERRO NA RESERVA; DATA DO CHECK-OUT DEVE SER POSTERIOR A DATA DO CHECK-IN ---------");
         }
 
         this.checkIn = checkIn;
